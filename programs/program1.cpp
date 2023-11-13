@@ -8,9 +8,6 @@ using namespace std;
 
 int main( int argc, char** argv ) {
 
-    //start a timer 
-    clock_t start = clock();
-
     if (argc < 3){
         cout << "Usage: "<< argv[0] <<" <input file> <output file> [view]" << endl;
         return -1;
@@ -49,13 +46,7 @@ int main( int argc, char** argv ) {
 
     // write the new image
     imwrite(argv[2], new_image);   
-
-    //end the timer
-    clock_t end = clock();
-    double elapsed_secs = double(end - start) / CLOCKS_PER_SEC;
-    //convert the time to milliseconds
-    elapsed_secs = elapsed_secs * 1000;
-    cout << "Time taken: " << elapsed_secs << " ms" << endl;
+    
 
     try {
         if (string(argv[3]) == "view") {
