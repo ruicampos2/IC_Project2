@@ -6,56 +6,57 @@
 using namespace cv;
 using namespace std;
 
-int main( int argc, char** argv ) {
+void extractChannel(const Mat& input, Mat& output, int channelNumber);
 
-    if (argc < 3){
-        cout << "Usage: "<< argv[0] <<" <input file> <output file> [view]" << endl;
+int main(int argc, char** argv) {
+
+    if (argc < 4) {
+        cout << "Usage: " << argv[0] << " <source> <destination> <channel_number>" << endl;
         return -1;
     }
 
-    // read the image
-    Mat img = imread(argv[1]);
+    // load the image
+    Mat sourceImage = imread(argv[1]);
     // check if the image is loaded
-    if (img.empty()){
-        cout << "Could not load image: " << argv[1] << endl;
+    if (sourceImage.empty()) {
+        cout << "Failed to load image: " << argv[1] << endl;
         return -1;
     }
 
-    // loop through the image and copy the pixels to a new image
-    Mat new_image = Mat::zeros(img.size(), img.type());
-    int channels = img.channels();
-    int nRows = img.rows;
-    int nCols = img.cols * channels;
+    int channelNumber = atoi(argv[3]);
+    Mat extractedChannel;
+    extractChannel(sourceImage, extractedChannel, channelNumber);
 
-    // check if the image is continuous
-    if (img.isContinuous()){
-        nCols *= nRows;
-        nRows = 1;
-    }
+    // Convert 
+    Mat bgrImage;
+    cvtColor(extractedChannel, bgrImage, COLOR_GRAY2BGR);
 
-    // loop through the image and copy the pixels to a new image
-    uchar* pixel;
-    for (int i = 0; i < nRows; i++){
-        pixel = img.ptr<uchar>(i);
-        // loop through the columns
-        for (int j = 0; j < nCols; j++){
-            // copy the pixel to the new image
-            new_image.at<uchar>(i,j) = pixel[j];
-        }
-    }
+    // save the BGR image
+    imwrite(argv[2], bgrImage);
 
-    // write the new image
-    imwrite(argv[2], new_image);   
-    
-
-    try {
-        if (string(argv[3]) == "view") {
-            imshow("Coppied Image", img);
-            waitKey(0);
-        }
-    } catch (exception& e) {
-        return 0;
-    }
+    cout << "Image saved in the directory opencv-bin" << endl;
 
     return 0;
+}
+
+void extractChannel(const Mat& input, Mat& output, int channelNumber) {
+    // create a single-channel image
+    output = Mat::zeros(input.size(), CV_8UC1);
+
+    if (input.isContinuous()) {
+        // calculate the total number of elements
+        int totalElements = input.rows * input.cols * input.channels();
+
+        // extract the specified channel
+        for (int i = 0; i < totalElements; i += input.channels()) {
+            output.data[i / input.channels()] = input.data[i + channelNumber - 1];
+        }
+    } else {
+        // extract the specified channel
+        for (int i = 0; i < input.rows; i++) {
+            for (int j = 0; j < input.cols; j++) {
+                output.at<uchar>(i, j) = input.at<Vec3b>(i, j)[channelNumber - 1];
+            }
+        }
+    }
 }
