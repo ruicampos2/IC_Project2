@@ -15,3 +15,15 @@ SET (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BASE_DIR}/../opencv-bin)
 
 add_executable (program1 program1.cpp)
 target_link_libraries (program1 ${OpenCV_LIBS})
+
+add_executable (program2a program2a.cpp)
+target_link_libraries (program2a ${OpenCV_LIBS})
+
+add_executable (program2b program2b.cpp)
+target_link_libraries (program2b ${OpenCV_LIBS})
+
+add_executable (program2c program2c.cpp)
+target_link_libraries (program2c ${OpenCV_LIBS})
+
+add_executable (program2d program2d.cpp)
+target_link_libraries (program2d ${OpenCV_LIBS})
