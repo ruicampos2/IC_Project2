@@ -27,3 +27,9 @@ target_link_libraries (program2c ${OpenCV_LIBS})
 
 add_executable (program2d program2d.cpp)
 target_link_libraries (program2d ${OpenCV_LIBS})
+
+add_executable (program4dec program4dec.cpp)
+target_link_libraries (program4dec ${OpenCV_LIBS})
+
+add_executable (program4enc program4enc.cpp)
+target_link_libraries (program4enc ${OpenCV_LIBS})
