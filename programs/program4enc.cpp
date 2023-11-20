@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     inputFile.close();
 
     // Initialize Golomb codec with parameter m
-    Golomb golomb(m);
+    golomb golomb(m);
 
     // Perform Golomb encoding on the audio data
     std::ofstream outputFile(outputFileName, std::ios::binary);
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
     // Write Golomb-encoded data to the output file
     for (int sample : audioData) {
-        std::string encodedSample = golomb.encode(sample, m);
+        std::string encodedSample = golomb.encode(sample);
         outputFile.write(encodedSample.c_str(), encodedSample.size());
     }
 

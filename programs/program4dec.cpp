@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     inputFile.close();
 
     // Initialize Golomb codec with parameter m
-    Golomb golomb(m);
+    golomb golomb(m);
 
     // Perform Golomb decoding on the encoded data
     std::ofstream outputFile(outputFileName, std::ios::binary);
@@ -36,8 +36,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Write decoded audio data to the output file
-    int decodedValue;
+    // Decode the entire bit stream
+    std::vector<int> decodedValues;
     std::string bitStream = "";
     for (char encodedSample : encodedData) {
         std::bitset<8> bits(encodedSample);
@@ -45,7 +45,10 @@ int main(int argc, char* argv[]) {
     }
 
     // Decode the entire bit stream
-    std::vector<int> decodedValues = golomb.decode(bitStream);
+    for (size_t i = 0; i < bitStream.size();) {
+        int decodedValue = golomb.decode(bitStream, i);
+        decodedValues.push_back(decodedValue);
+    }
 
     // Write decoded audio data to the output file
     for (int decodedValue : decodedValues) {
