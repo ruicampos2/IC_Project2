@@ -3,5 +3,7 @@
 /home/ruicampos/Desktop/IC/IC_Project2/programs/build/CMakeFiles/program2b.dir
 /home/ruicampos/Desktop/IC/IC_Project2/programs/build/CMakeFiles/program2c.dir
 /home/ruicampos/Desktop/IC/IC_Project2/programs/build/CMakeFiles/program2d.dir
+/home/ruicampos/Desktop/IC/IC_Project2/programs/build/CMakeFiles/program4dec.dir
+/home/ruicampos/Desktop/IC/IC_Project2/programs/build/CMakeFiles/program4enc.dir
 /home/ruicampos/Desktop/IC/IC_Project2/programs/build/CMakeFiles/edit_cache.dir
 /home/ruicampos/Desktop/IC/IC_Project2/programs/build/CMakeFiles/rebuild_cache.dir

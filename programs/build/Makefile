@@ -181,6 +181,32 @@ program2d/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/program2d.dir/build.make CMakeFiles/program2d.dir/build
 .PHONY : program2d/fast
 
+#=============================================================================
+# Target rules for targets named program4dec
+
+# Build rule for target.
+program4dec: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 program4dec
+.PHONY : program4dec
+
+# fast build rule for target.
+program4dec/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program4dec.dir/build.make CMakeFiles/program4dec.dir/build
+.PHONY : program4dec/fast
+
+#=============================================================================
+# Target rules for targets named program4enc
+
+# Build rule for target.
+program4enc: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 program4enc
+.PHONY : program4enc
+
+# fast build rule for target.
+program4enc/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program4enc.dir/build.make CMakeFiles/program4enc.dir/build
+.PHONY : program4enc/fast
+
 program1.o: program1.cpp.o
 .PHONY : program1.o
 
@@ -301,6 +327,54 @@ program2d.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/program2d.dir/build.make CMakeFiles/program2d.dir/program2d.cpp.s
 .PHONY : program2d.cpp.s
 
+program4dec.o: program4dec.cpp.o
+.PHONY : program4dec.o
+
+# target to build an object file
+program4dec.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program4dec.dir/build.make CMakeFiles/program4dec.dir/program4dec.cpp.o
+.PHONY : program4dec.cpp.o
+
+program4dec.i: program4dec.cpp.i
+.PHONY : program4dec.i
+
+# target to preprocess a source file
+program4dec.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program4dec.dir/build.make CMakeFiles/program4dec.dir/program4dec.cpp.i
+.PHONY : program4dec.cpp.i
+
+program4dec.s: program4dec.cpp.s
+.PHONY : program4dec.s
+
+# target to generate assembly for a file
+program4dec.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program4dec.dir/build.make CMakeFiles/program4dec.dir/program4dec.cpp.s
+.PHONY : program4dec.cpp.s
+
+program4enc.o: program4enc.cpp.o
+.PHONY : program4enc.o
+
+# target to build an object file
+program4enc.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program4enc.dir/build.make CMakeFiles/program4enc.dir/program4enc.cpp.o
+.PHONY : program4enc.cpp.o
+
+program4enc.i: program4enc.cpp.i
+.PHONY : program4enc.i
+
+# target to preprocess a source file
+program4enc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program4enc.dir/build.make CMakeFiles/program4enc.dir/program4enc.cpp.i
+.PHONY : program4enc.cpp.i
+
+program4enc.s: program4enc.cpp.s
+.PHONY : program4enc.s
+
+# target to generate assembly for a file
+program4enc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/program4enc.dir/build.make CMakeFiles/program4enc.dir/program4enc.cpp.s
+.PHONY : program4enc.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -314,6 +388,8 @@ help:
 	@echo "... program2b"
 	@echo "... program2c"
 	@echo "... program2d"
+	@echo "... program4dec"
+	@echo "... program4enc"
 	@echo "... program1.o"
 	@echo "... program1.i"
 	@echo "... program1.s"
@@ -329,6 +405,12 @@ help:
 	@echo "... program2d.o"
 	@echo "... program2d.i"
 	@echo "... program2d.s"
+	@echo "... program4dec.o"
+	@echo "... program4dec.i"
+	@echo "... program4dec.s"
+	@echo "... program4enc.o"
+	@echo "... program4enc.i"
+	@echo "... program4enc.s"
 .PHONY : help
 
 
