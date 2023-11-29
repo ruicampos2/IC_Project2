@@ -13,18 +13,19 @@ int main(int argc, char* argv[]) {
     std::string outputFileName = argv[2];
     int m = std::stoi(argv[3]);
 
-    // Read the input audio file
+    // Read the input stereo audio file
     std::ifstream inputFile(inputFileName, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cerr << "Error: Unable to open input file." << std::endl;
         return 1;
     }
 
-    // Read audio data from the file
-    std::vector<int> audioData;
-    int sample;
-    while (inputFile.read(reinterpret_cast<char*>(&sample), sizeof(int))) {
-        audioData.push_back(sample);
+    // Read stereo audio data from the file
+    std::vector<std::pair<int, int>> stereoAudioData;
+    std::pair<int, int> sample;
+    while (inputFile.read(reinterpret_cast<char*>(&sample.first), sizeof(int)) &&
+           inputFile.read(reinterpret_cast<char*>(&sample.second), sizeof(int))) {
+        stereoAudioData.push_back(sample);
     }
 
     // Close the input file
@@ -33,7 +34,7 @@ int main(int argc, char* argv[]) {
     // Initialize Golomb codec with parameter m
     golomb golomb(m);
 
-    // Perform Golomb encoding on the audio data
+    // Perform Golomb encoding on the stereo audio data
     std::ofstream outputFile(outputFileName, std::ios::binary);
     if (!outputFile.is_open()) {
         std::cerr << "Error: Unable to open output file." << std::endl;
@@ -41,9 +42,12 @@ int main(int argc, char* argv[]) {
     }
 
     // Write Golomb-encoded data to the output file
-    for (int sample : audioData) {
-        std::string encodedSample = golomb.encode(sample);
-        outputFile.write(encodedSample.c_str(), encodedSample.size());
+    for (const auto& sample : stereoAudioData) {
+        std::string encodedSampleLeft = golomb.encode(sample.first);
+        std::string encodedSampleRight = golomb.encode(sample.second);
+
+        outputFile.write(encodedSampleLeft.c_str(), encodedSampleLeft.size());
+        outputFile.write(encodedSampleRight.c_str(), encodedSampleRight.size());
     }
 
     // Close the output file

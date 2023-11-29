@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -isystem /usr/local/include/opencv4
+CXX_INCLUDES = 
 
 CXX_FLAGS =  -Wall -Wextra -std=c++17 -pthread -O3
 

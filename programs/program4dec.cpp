@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     std::string outputFileName = argv[2];
     int m = std::stoi(argv[3]);
 
-    // Read the Golomb-encoded audio file
+    // Read the Golomb-encoded stereo audio file
     std::ifstream inputFile(inputFileName, std::ios::binary);
     if (!inputFile.is_open()) {
         std::cerr << "Error: Unable to open input file." << std::endl;
@@ -36,23 +36,25 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Decode the entire bit stream
-    std::vector<int> decodedValues;
+    // Decode the entire bit stream for both channels
+    std::vector<std::pair<int, int>> decodedValues;
     std::string bitStream = "";
     for (char encodedSample : encodedData) {
         std::bitset<8> bits(encodedSample);
         bitStream += bits.to_string();
     }
 
-    // Decode the entire bit stream
+    // Decode the entire bit stream for both channels
     for (size_t i = 0; i < bitStream.size();) {
-        int decodedValue = golomb.decode(bitStream, i);
-        decodedValues.push_back(decodedValue);
+        int decodedValueLeft = golomb.decode(bitStream, i);
+        int decodedValueRight = golomb.decode(bitStream, i);
+        decodedValues.emplace_back(decodedValueLeft, decodedValueRight);
     }
 
-    // Write decoded audio data to the output file
-    for (int decodedValue : decodedValues) {
-        outputFile.write(reinterpret_cast<char*>(&decodedValue), sizeof(int));
+    // Write decoded stereo audio data to the output file
+    for (const auto& decodedValue : decodedValues) {
+        outputFile.write(reinterpret_cast<const char*>(&decodedValue.first), sizeof(int));
+        outputFile.write(reinterpret_cast<const char*>(&decodedValue.second), sizeof(int));
     }
 
     // Close the output file

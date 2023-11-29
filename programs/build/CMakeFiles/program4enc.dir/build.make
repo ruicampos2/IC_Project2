@@ -92,21 +92,6 @@ program4enc_EXTERNAL_OBJECTS =
 
 /home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: CMakeFiles/program4enc.dir/program4enc.cpp.o
 /home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: CMakeFiles/program4enc.dir/build.make
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_gapi.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_highgui.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_ml.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_objdetect.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_photo.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_stitching.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_video.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_videoio.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_imgcodecs.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_dnn.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_calib3d.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_features2d.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_flann.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_imgproc.so.4.8.0
-/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: /usr/local/lib/libopencv_core.so.4.8.0
 /home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc: CMakeFiles/program4enc.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ruicampos/Desktop/IC/IC_Project2/programs/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program4enc"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/program4enc.dir/link.txt --verbose=$(VERBOSE)
