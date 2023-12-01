@@ -35,20 +35,23 @@ int main(int argc, char** argv) {
 
 void adjustIntensity(const Mat& input, Mat& output, double factor) {
     // validate factor (ensure it's within a valid range)
-    if (factor < 0.0 || factor > 2.0) {
-        cout << "Invalid intensity factor. Please use a factor between 0.0 and 2.0." << endl;
+    if (factor < -255.0 || factor > 255.0) {
+        cout << "Invalid intensity factor. Please use a factor between -255.0 and 255.0." << endl;
         return;
     }
 
-    // create an output image with the same size and type as the input
-    output = Mat::zeros(input.size(), input.type());
+    // calculate the alpha and beta values for addWeighted
+    double alpha, beta;
 
-    for (int i = 0; i < input.rows; ++i) {
-        for (int j = 0; j < input.cols; ++j) {
-            for (int c = 0; c < input.channels(); ++c) {
-                // adjust intensity values
-                output.at<Vec3b>(i, j)[c] = saturate_cast<uchar>(factor * input.at<Vec3b>(i, j)[c]);
-            }
-        }
+    if (factor >= 0.0) {
+        alpha = 1.0 + factor / 255.0;
+        beta = 0.0;
+    } else {
+        alpha = 1.0 + factor / 255.0;
+        beta = 0.0;
     }
+
+    // apply the intensity adjustment using addWeighted
+    addWeighted(input, alpha, Mat::zeros(input.size(), input.type()), 0.0, beta, output);
 }
+
