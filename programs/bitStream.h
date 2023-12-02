@@ -1,206 +1,183 @@
-//Código recebido de outro trabalho
 #include <fstream>
 #include <vector>
 #include <string>
 #include <iostream>
 #include <bitset>
 
-// C++ can only write bytes not bits. So we need to write a byte at a time.
 class BitStream {
-    private:
-        std::fstream file;
-        std::string fileMode;
-        std::string fileName;
-        int fileSize;
-        //create a variable that holds the current array of 8 bits
-        std::vector<int> bitArray;
-        //create a variable that holds the current bit in the current array
-        int currentBitPos;
-        //create a variable that holds the current array in the byteArray
-        int currentArrayPos;
+private:
+    std::fstream file;
+    std::string fileMode;
+    std::string fileName;
+    int fileSize;
+    std::vector<int> bitArray;
+    int currentBitPos;
+    int currentArrayPos;
 
-    public:
-        BitStream(std::string name, std::string mode) {
-            fileName = name;
-            fileMode = mode;
+public:
+    BitStream(std::string name, std::string mode) {
+        fileName = name;
+        fileMode = mode;
 
-            if (mode == "r"){
-                file.open(fileName, std::ios::in | std::ios::binary);
-                currentBitPos = 0;
-                fileSize = getFileSize();
-            } else if (mode == "w") {
-                //clear the file if it already exists, 
-                //otherwise create a new file
-                //append mode
-                file.open(fileName, std::ios::out | std::ios::binary | std::ios::trunc);
-                currentBitPos = 0;
-                currentArrayPos = 0;
-            } else {
-                std::cout << "Invalid mode" << std::endl;
-            }
+        if (mode == "r") {
+            file.open(fileName, std::ios::in | std::ios::binary);
+            currentBitPos = 0;
+            fileSize = getFileSize();
+        } else if (mode == "w") {
+            file.open(fileName, std::ios::out | std::ios::binary | std::ios::trunc);
+            currentBitPos = 0;
+            currentArrayPos = 0;
+        } else {
+            std::cout << "Invalid mode" << std::endl;
         }
+    }
 
-        int getFileSize() {
-            //create a duplicate file stream
-            std::fstream file2;
-            file2.open(fileName, std::ios::in | std::ios::binary);
-            file2.seekg(0, std::ios::end);
-            int size = file2.tellg();
-            file2.seekg(0, std::ios::beg);
-            file2.close();
+    int getFileSize() {
+        std::fstream file2;
+        file2.open(fileName, std::ios::in | std::ios::binary);
+        file2.seekg(0, std::ios::end);
+        int size = file2.tellg();
+        file2.seekg(0, std::ios::beg);
+        file2.close();
 
-            return size;
-        }
+        return size;
+    }
 
-        std::vector<int> byteToBitArray(char byte){
-            if (fileMode == "r") {
-                //read the byte and convert it to a bit array 
-                std::vector<int> bitArray;
-                for (int i = 0; i < 8; i++) {
-                    bitArray.push_back((byte >> i) & 1);
-                }
-
-                //reverse the bit array
-                std::vector<int> reversedBitArray;
-                for (int i = 7; i >= 0; i--) {
-                    reversedBitArray.push_back(bitArray[i]);
-                }
-
-                return reversedBitArray;
-            }
-
+    std::vector<int> byteToBitArray(char byte) {
+        if (fileMode == "r") {
             std::vector<int> bitArray;
             for (int i = 0; i < 8; i++) {
-                bitArray.push_back(byte & 1);
-                byte >>= 1;
+                bitArray.push_back((byte >> i) & 1);
             }
 
-            return bitArray;
-        }
-
-        char bitArrayToByte(std::vector<int> bitArray){
-            char byte = 0;
-            //invert the bit array
-            std::vector<int> invertedBitArray;
+            std::vector<int> reversedBitArray;
             for (int i = 7; i >= 0; i--) {
-                invertedBitArray.push_back(bitArray[i]);
+                reversedBitArray.push_back(bitArray[i]);
             }
 
-            for (int i = 0; i < 8; i++) {
-                byte |= invertedBitArray[i] << i;
-            }
-
-            return byte;
+            return reversedBitArray;
         }
 
-        std::vector<int> readBits(int n) {
-            if (fileMode != "r") {
-                std::cout << "File not open for reading" << std::endl;
-                return std::vector<int>();
-            }
-            
-            std::vector <int> outBits;
+        std::vector<int> bitArray;
+        for (int i = 0; i < 8; i++) {
+            bitArray.push_back(byte & 1);
+            byte >>= 1;
+        }
 
-            char byte;
-            int bitCount = 0;
-            while (bitCount < n) {
-                if (currentBitPos == 0) {
+        return bitArray;
+    }
+
+    char bitArrayToByte(std::vector<int> bitArray) {
+        char byte = 0;
+        std::vector<int> invertedBitArray;
+        for (int i = 7; i >= 0; i--) {
+            invertedBitArray.push_back(bitArray[i]);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            byte |= invertedBitArray[i] << i;
+        }
+
+        return byte;
+    }
+
+    std::vector<int> readBits(int n) {
+        if (fileMode != "r") {
+            std::cout << "File not open for reading" << std::endl;
+            return std::vector<int>();
+        }
+
+        std::vector<int> outBits;
+        int bitCount = 0;
+        while (bitCount < n) {
+            if (currentBitPos == 0) {
+                if (fileSize > 0) {
+                    char byte;
                     file.read(&byte, 1);
                     bitArray = byteToBitArray(byte);
-                }
-
-                outBits.push_back(bitArray[currentBitPos]);
-                currentBitPos++;
-                bitCount++;
-
-                if (currentBitPos == 8) {
-                    currentBitPos = 0;
+                    fileSize--;
+                } else {
+                    break;  // Reached end of file
                 }
             }
 
-            return outBits;
-        }
-
-        int readBit() {
-            if (fileMode != "r") {
-                std::cout << "File not open for reading" << std::endl;
-                return -1;
-            }
-
-            if (currentBitPos == 0) {
-                char byte;
-                file.read(&byte, 1);
-                bitArray = byteToBitArray(byte);
-            }
-
-            int bit = bitArray[currentBitPos];
+            outBits.push_back(bitArray[currentBitPos]);
             currentBitPos = (currentBitPos + 1) % 8;
-
-            return bit;
+            bitCount++;
         }
 
-        void writeBits(std::vector<int> bits) {
-            if (fileMode != "w"){
-                std::cout << "File is not open for writing" << std::endl;
-                return;
-            }
+        return outBits;
+    }
 
-            //open the file and write the next n bits
-            //n is size of bits
-            int n = bits.size();
-
-            // std::cout << "n: " << n-64 << std::endl;
-
-            int bitCount = 0;
-            while (n > 0) {
-                if (currentBitPos == 8) {
-                    //reset the current bit position
-                    //write the bitArray to the end of the file
-                    char byte = bitArrayToByte(bitArray);
-                    file.write(&byte, 1);
-                    currentBitPos = 0;
-                }
-
-                //if the current bit position is 0, then we need to create a new array
-                if (currentBitPos == 0) {
-                    bitArray = std::vector<int>(8);
-                }
-                //write the next bit to the current array
-                bitArray[currentBitPos] = bits[bitCount];
-                currentBitPos++;
-                bitCount++;
-                n--;
-            }
+    int readBit() {
+        if (fileMode != "r") {
+            std::cout << "File not open for reading" << std::endl;
+            return -1;
         }
 
-        void writeBit(int bit) {
-            if (fileMode != "w") {
-                std::cout << "File is not open for writing" << std::endl;
-                return;
-            }
+        if (currentBitPos == 0) {
+            char byte;
+            file.read(&byte, 1);
+            bitArray = byteToBitArray(byte);
+        }
 
-            //if the current bit position is 8, then we need to change it to 0
+        int bit = bitArray[currentBitPos];
+        currentBitPos = (currentBitPos + 1) % 8;
+
+        return bit;
+    }
+
+    void writeBits(std::vector<int> bits) {
+        if (fileMode != "w") {
+            std::cout << "File is not open for writing" << std::endl;
+            return;
+        }
+
+        int n = bits.size();
+        int bitCount = 0;
+        while (n > 0) {
             if (currentBitPos == 8) {
-                //reset the current bit position
                 char byte = bitArrayToByte(bitArray);
-                //write the bitArray to the end of the file
                 file.write(&byte, 1);
                 currentBitPos = 0;
             }
 
-            //if the current bit position is 0, then we need to create a new array
             if (currentBitPos == 0) {
                 bitArray = std::vector<int>(8);
             }
-            //write the next bit to the current array
-            bitArray[currentBitPos] = bit;
+
+            bitArray[currentBitPos] = bits[bitCount];
             currentBitPos++;
+            bitCount++;
+            n--;
+        }
+    }
+
+    void writeBit(int bit) {
+        if (fileMode != "w") {
+            std::cout << "File is not open for writing" << std::endl;
+            return;
         }
 
-        void close() {
-            //write the bitArray to the file
+        if (currentBitPos == 8) {
             char byte = bitArrayToByte(bitArray);
             file.write(&byte, 1);
-            file.close();
+            currentBitPos = 0;
         }
+
+        if (currentBitPos == 0) {
+            bitArray = std::vector<int>(8);
+        }
+
+        bitArray[currentBitPos] = bit;
+        currentBitPos++;
+    }
+
+    void close() {
+        if (currentBitPos > 0) {
+            char byte = bitArrayToByte(bitArray);
+            file.write(&byte, 1);
+        }
+        file.close();
+    }
 };

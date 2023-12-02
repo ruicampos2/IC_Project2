@@ -1,63 +1,166 @@
+// Golomb class
+#include <fstream>
+#include <vector>
+#include <string>
 #include <iostream>
 #include <bitset>
 #include <cmath>
 
-class golomb {
-private:
-    int m; // Golomb parameter
-    bool useSignAndMagnitude; // Flag para determinar a abordagem de codificação para números negativos
+// C++ can only write bytes not bits. So we need to write a byte at a time.
+class Golomb {
+    private:
+        int min_bits;
+        int max_bits;
+        int n_values_with_min_bits;
 
-public:
-    golomb(int parameter_m) : m(parameter_m), useSignAndMagnitude(true) {}
-
-    // Função para encode um inteiro, levando em conta a codificação para números negativos
-    std::string encode(int value) const {
-    int quotient, remainder;
-
-    if (value >= 0 || useSignAndMagnitude) {
-        // Se o valor for positivo ou a abordagem for sign and magnitude, use a codificação padrão
-        quotient = value / m;
-        remainder = value % m;
-    } else {
-        // Se o valor for negativo e a abordagem for interleaving, codifique usando interleaving
-        quotient = abs(value) / m;
-        remainder = abs(value) % m;
-        remainder = 2 * remainder + ((value < 0) ? 1 : 0);
-    }
-
-    // Calculate Golomb code
-    std::string golombCode = std::string(quotient + 1, '1') + '0';
-    golombCode += std::bitset<sizeof(int) * 8>(remainder).to_string().substr(std::bitset<sizeof(int) * 8>(remainder).size() - static_cast<size_t>(log2(m)));
-
-    return golombCode;
-}
-
-    // Função para decode um Golomb code para um inteiro, levando em conta a codificação para números negativos
-    int decode(const std::string& golombCode, size_t& startIdx) const {
-        size_t idx = golombCode.find('0', startIdx) + 1;
-        int quotient = idx - 1;
-
-        // Extract the binary representation of remainder
-        std::string remainderBinary = golombCode.substr(idx, (size_t)log2(m));
-
-        int remainder = std::bitset<sizeof(int) * 8>(remainderBinary).to_ulong();
-
-        // Se a abordagem for interleaving, ajuste o remainder para obter o valor negativo correto
-        if (!useSignAndMagnitude && (remainder % 2 == 1)) {
-            remainder = (remainder - 1) / 2;
-            quotient = -quotient - 1;
+        // min_bits and values with min_bits
+        void calculateBits(int m) {
+            if (m != 0){
+                // calculate max_bits: log2(m) with ceiling to integer
+                max_bits = ceil(log2(m));
+                // calculate min_bits: max_bits - 1
+                min_bits = max_bits - 1;
+                // calculate n_values_with_min_bits: (2^max_bits) - m
+                n_values_with_min_bits = pow(2, max_bits) - m;
+            } else {
+                // if m is 0, then the values are 0
+                max_bits = 0;
+                min_bits = 0;
+                n_values_with_min_bits = 0;
+            }
         }
 
-        // Update the startIdx for the next decoding
-        startIdx = idx + (size_t)log2(m);
+        // function that converts integer to string of bits with n bits of representation
+        std::string remaindersBitString(int num, int n_bits_representation){
+            std::string result = "";
+            for (int i = 0; i < n_bits_representation; i++) {
+                result = std::to_string(num % 2) + result;
+                num /= 2;
+            }
 
-        return quotient * m + remainder;
-    }
+            return result;
+        }
+
+        int bitStringToInt(std::string bit_string) {
+            int result = 0;
+            for (long unsigned int i = 0; i < bit_string.length(); i++)
+                result = result * 2 + (bit_string[i] - '0');
+
+            return result;
+        }
+
+    public:
+        // constructor
+        Golomb() { }
+
+        //decode function for a fixed M value
+        std::vector<int> decode(std::string encoded_string, int m) {
+            calculateBits(m);
+            std::vector<int> result;
+            // bit position in the encoded string
+            int i = 0;
+
+            // loop through the encoded string
+            while((long unsigned int) i < encoded_string.length()) {
+                int quotient = 0;
+                // count the number of 0s in the encoded string to get the quotient (written in unary code)
+                while (encoded_string[i] == '0') {
+                    quotient++;
+                    // next bit
+                    i++;
+                }
+                // skip a bit (the 1 in the unary code, that represents the end of the quotient)
+                i++;
+                // initialize the remainder 
+                int remainder = 0;
+                // counter for the number of bits read from the encoded string in the remainder part (binary code)
+                int j = 0;
+                // temporary string to store the remainder
+                std::string tmp = "";
+                
+                // if m is 1, the remainder is 0
+                // besides that if m is 0, it's forced as 1 (to avoid division by 0)
+                if (m != 1){
+                    // while the number of bits of the remainder doesn't reach min_bits
+                    while (j < min_bits) {
+                        // add the bit to the temporary string (to get the remainder)
+                        tmp += encoded_string[i];
+                        // next bit
+                        i++;
+                        // next bit of the remainder part (binary code)
+                        j++;
+                    }
+
+                    // convert the temporary string to integer to get the remainder
+                    int res1 = bitStringToInt(tmp);
+
+                    // if the remainder has a value that is greater than the number of values with min_bits (which corresponds to the max value with min_bits)
+                    // the next bit must be read as part of the remainder
+                    // if the value is smaller, the remainder is the value read so far
+                    if (res1 < n_values_with_min_bits) {
+                        remainder = res1;
+                    } else {
+                        tmp += encoded_string[i];
+                        i++;
+                        // convert the temporary string to integer to get the remainder
+                        remainder = bitStringToInt(tmp) - n_values_with_min_bits;
+                    }
+                } else {
+                    remainder = 0;
+                    i++;
+                }
+
+                // result value without sign
+                int res = quotient * m + remainder;
+
+                // if the encoded string has a 1 in the end of the remainder, the result is negative, otherwise it's positive
+                if (encoded_string[i] == '1') {
+                    result.push_back(-(res));
+                } else {
+                    result.push_back(res);
+                }
+
+                i++;
+            }
+
+            return result;
+        }
 
 
-    // Função para toggle encoding/decoding approach for negative numbers
-    void setNegativeEncoding(bool useSignAndMagnitudeFlag) {
-        useSignAndMagnitude = useSignAndMagnitudeFlag;
-    }
-};
+        std::string encode(int num, int m){
+            calculateBits(m);
+            // result string
+            std::string result = "";
+            int quotient = 0;
+            int remainder = 0;
+            // if m isn't 0, calculate the quotient and the remainder with golomb coding
+            if (m != 0){
+                quotient = abs(num) / m;
+                remainder = abs(num) % m;
+            }
+            // concatenate the quotient in unary code 
+            for (int i = 0; i < quotient; i++) {
+                result += "0";
+            }
 
+            // use a bit (1) to represent the end of the quotient and the begginning of the remainder
+            result += "1";
+
+            // if m is 1, the remainder is 0, otherwise calculate the remainder in binary code
+            if (m != 1){
+                if (remainder < n_values_with_min_bits) {
+                    result += remaindersBitString(remainder, min_bits);
+                } else {
+                    result += remaindersBitString(remainder + n_values_with_min_bits, max_bits);
+                }
+            }else{
+                result += "0";
+            }
+
+            // if the number is negative, add a 1 at the end of the remainder to indicate the sign
+            num < 0 ? result += "1" : result += "0";
+
+
+            return result;
+        }
+    };
