@@ -33,7 +33,7 @@ class (em conjunto com Rafa e net)
 4.
 para testar
 -	./program4enc ../AudioFiles/sample01.wav sample01_enc.wav 256
--	./program4dec   
+-	./program4dec sample01_enc sample01_decoded
 
 
 
