@@ -1,8 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program1"
-  "/home/ruicampos/Desktop/IC/IC_Project2/opencv-bin/program1.pdb"
+  "/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/opencv-bin/program1"
+  "/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/opencv-bin/program1.pdb"
   "CMakeFiles/program1.dir/program1.cpp.o"
-  "CMakeFiles/program1.dir/program1.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.
