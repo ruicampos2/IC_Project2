@@ -1,1 +1,0 @@
-/usr/bin/c++   -Wall -Wextra -std=c++17 -pthread -O3   CMakeFiles/program4dec.dir/program4dec.cpp.o  -o "/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/opencv-bin/program4dec"  -lsndfile -lfftw3 

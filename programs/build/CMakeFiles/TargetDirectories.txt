@@ -1,9 +1,0 @@
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/program4dec.dir
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/program4enc.dir
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/program2c.dir
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/program2b.dir
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/program2a.dir
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/program2d.dir
-/mnt/c/Users/benny/Desktop/ECT/4º Ano/1 Semestre/IC/IC_Project2/programs/build/CMakeFiles/program1.dir
