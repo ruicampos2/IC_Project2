@@ -73,7 +73,7 @@ class (em conjunto com Rafa e net)
 para testar
 ```bash
 ./program4enc ../AudioFiles/sample01.wav sample01_enc.wav 256
-./program4dec sample01_enc sample01_decoded
+./program4dec sample01_enc.wav sample01_decoded
 ```
 
 

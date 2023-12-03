@@ -28,8 +28,8 @@ target_link_libraries (program2c ${OpenCV_LIBS})
 add_executable (program2d program2d.cpp)
 target_link_libraries (program2d ${OpenCV_LIBS})
 
-add_executable (program4dec program4dec.cpp)
-target_link_libraries (program4dec sndfile fftw3)
+add_executable (program4and5dec program4and5dec.cpp)
+target_link_libraries (program4and5dec sndfile fftw3)
 
-add_executable (program4enc program4enc.cpp)
-target_link_libraries (program4enc sndfile fftw3)
+add_executable (program4and5enc program4and5enc.cpp)
+target_link_libraries (program4and5enc sndfile fftw3)
