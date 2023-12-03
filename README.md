@@ -14,10 +14,20 @@ Go to 'IC_Project2/programs' and run
 make all
 ```
 ## TESTING:
-### Exercise 1
-Go to 'IC_Project2/opencv-bin' and run
+Go to 'IC_Project2/opencv-bin' and run the respective exercise you want, as listed below
+### Exercise 1 
+### Color Extraction - Blue, Green and Red
+To test and check the picture of blue pixels, run:
 ```bash
-./program1 ../imagensPPM/arial.ppm arial_changedgreen.ppm x (em que x=1 corresponde a azul, x=2 a verde e x=3 a vermelho)
+./program1 ../imagensPPM/arial.ppm arial_changedblue.ppm 1
+```
+To test and check the picture of green pixels, run:
+```bash
+./program1 ../imagensPPM/arial.ppm arial_changedgreen.ppm 2
+```
+To test and check the picture of red pixels, run:
+```bash
+./program1 ../imagensPPM/arial.ppm arial_changedred.ppm 3
 ```
 ### Exercise 2
 ### 2 a) Negative Image
