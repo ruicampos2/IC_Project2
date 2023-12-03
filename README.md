@@ -1,39 +1,70 @@
 # IC_Project2
+
+# Authors and Contribuitions
+- Bernardo Marçal - 103236 - 33%
+- Ricardo Machado - 102737 - 33%
+- Rui Campos - 103709 - 33%
+  
 Install OpenCV library
 https://www.geeksforgeeks.org/how-to-install-opencv-in-c-on-linux/
 
+## TO BUILD:
+Go to 'IC_Project2/programs' and run
+```bash
+make all
+```
+## TESTING:
+### Exercise 1
+Go to 'IC_Project2/opencv-bin' and run
+```bash
+./program1 ../imagensPPM/arial.ppm arial_changedgreen.ppm x (em que x=1 corresponde a azul, x=2 a verde e x=3 a vermelho)
+```
+### Exercise 2
+### 2 a) Negative Image
+To test and check the picture in negative values, run:
+```bash
+./program2a ../imagensPPM/arial.ppm arial_negative.ppm
+```
+### 2 b) Image Mirroring
+To check the picture mirrored in the horizontal axis, run:
+```bash
+./program2b ../imagensPPM/arial.ppm arial_horizontal.ppm h
+```
 
-PARA TESTAR:
-1. 
-make no diretorio programs
--   make all
-codigo de teste no opencv-bin
--	./program1 ../imagensPPM/arial.ppm arial_changedgreen.ppm x (em que x=1 corresponde a azul, x=2 a verde e x=3 a vermelho)
+To check the picture mirrored in the vertical axis, run:
+```bash
+./program2b ../imagensPPM/arial.ppm arial_vertical.ppm v
+```
 
-2.
-(a)-> versão negativa = versão toda a branco
-para testar
--	./program2a ../imagensPPM/arial.ppm arial_negative.ppm
+### 2 c) Image Rotation
+To check the picture rotated 90 degrees, run:
+```bash
+./program2c ../imagensPPM/arial.ppm arial_90.ppm 90
+```
 
-(b)
-para testar
--	./program2b ../imagensPPM/arial.ppm arial_something.ppm x	(em que x = h para espelho horizontal ou x = v para espelho vertical)
+To check the picture rotated 180 degrees, run:
+```bash
+./program2c ../imagensPPM/arial.ppm arial_180.ppm 180
+```
 
-(c)
-para testar
--	./program2c ../imagensPPM/arial.ppm arial_x.ppm x (em que x tem de obrigatoriamente ser múltiplo de 90)
-
-(d)
-para testar 
--	./program2d ../imagensPPM/arial.ppm arial_x.ppm x (em que x tem de ser entre 0 e 2 para aumentar/diminuir intensidade da luz)
-
-3.
+If you want to test values by yourself, make sure to substitute the 'x' by multiples of 90, run:
+```bash
+./program2c ../imagensPPM/arial.ppm arial_x.ppm x
+```
+### 2 d) Light Increase/Decrease Image
+To test and check, run the code below, where you should choose a number between 0 and 2 to increase/decrease the light levels
+```bash
+./program2d ../imagensPPM/arial.ppm arial_x.ppm x 
+```
+### Exercise 3
 class (em conjunto com Rafa e net)
 
-4.
+### Exercise 4
 para testar
--	./program4enc ../AudioFiles/sample01.wav sample01_enc.wav 256
--	./program4dec sample01_enc sample01_decoded
+```bash
+./program4enc ../AudioFiles/sample01.wav sample01_enc.wav 256
+./program4dec sample01_enc sample01_decoded
+```
 
 
 
