@@ -126,6 +126,87 @@ class Golomb {
             return result;
         }
 
+        //decode function for dynamic Ms (changing Ms)
+        std::vector<int> decodeMultiple(std::string encoded_string, std::vector<int> m_vector, int block_size) {
+            std::vector<int> result;
+            // bit position in the encoded string
+            int i = 0;
+            // m index on the vector for the current block
+            int m_i = 0;
+            // blocksize bits counter
+            int count = 0;
+            calculateBits(m_vector[m_i]);
+            while((long unsigned int) i < encoded_string.length()) {
+                    int quotient = 0;
+                    // count the number of 0s in the encoded string to get the quotient (written in unary code)
+                    while (encoded_string[i] == '0') {
+                        quotient++;
+                        // next bit
+                        i++;
+                    }
+                    // skip a bit (the 1 in the unary code, that represents the end of the quotient)
+                    i++;
+                    int remainder = 0;
+                    // counter for the number of bits read from the encoded string in the remainder part (binary code)
+                    int j = 0;
+                    std::string tmp = "";
+
+                    // if m is 1, the remainder is 0;
+                    // besides that if m is 0, it's forced as 1 (to avoid division by 0)
+                    if (m_vector[m_i] != 1){
+                        while (j < min_bits) {
+                            tmp += encoded_string[i];
+                            // next bit
+                            i++;
+                            // next bit of the remainder part (binary code)
+                            j++;
+                        }
+                        
+                        // convert the temporary string to integer to get the remainder
+                        int res1 = bitStringToInt(tmp);
+
+                        // if the remainder has a value that is greater than the number of values with min_bits (which corresponds to the max value with min_bits)
+                        // the next bit must be read as part of the remainder
+                        // if the value is smaller, the remainder is the value read so far
+                        if (res1 < n_values_with_min_bits) {
+                            remainder = res1;
+                        } else {
+                            tmp += encoded_string[i];
+                            // next bit
+                            i++;
+                            remainder = bitStringToInt(tmp) - n_values_with_min_bits;
+                        }
+                    } else {
+                        remainder = 0;
+                        // next bit
+                        i++;
+                    }
+
+                    // result value without sign
+                    int res = quotient * m_vector[m_i] + remainder;
+
+                    // if the encoded string has a 1 in the end of the remainder, the result is negative, otherwise it's positive
+                    if (encoded_string[i] == '1') {
+                        result.push_back(-(res));
+                    } else {
+                        result.push_back(res);
+                    }
+
+                    // next bit
+                    i++;
+
+                    count++;
+                    // if the block size is reached, the m index is incremented
+                    if (count == block_size) {
+                        // next m index
+                        m_i++;
+                        // reset blocksize bits counter
+                        count = 0;
+                        calculateBits(m_vector[m_i]);
+                    }  
+                }
+            return result;
+        }
 
         std::string encode(int num, int m){
             calculateBits(m);
@@ -163,4 +244,4 @@ class Golomb {
 
             return result;
         }
-    };
+};
